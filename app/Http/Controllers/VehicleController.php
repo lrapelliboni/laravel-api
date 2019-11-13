@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Vehicle;
 use App\Http\Resources\VehicleResource;
+use Illuminate\Support\Arr;
 
 class VehicleController extends Controller
 {
@@ -52,6 +53,23 @@ class VehicleController extends Controller
             ], 404);
         }
         return new VehicleResource($vehicle);
+    }
+
+    /**
+     * Display the specified resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function find(Request $request)
+    {
+        if ($request->query() !== null
+            && Arr::has($request->query(), 'q')) {
+            $query = $request->query()['q'];
+            $vehicles = Vehicle::where('veiculo', 'like', '%'. $query .'%')->get();
+            return VehicleResource::collection($vehicles);
+        }
+        return $this->index();
     }
 
     /**

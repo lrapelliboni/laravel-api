@@ -17,8 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::get('veiculos/find', 'VehicleController@find')->middleware('auth:api');
 Route::apiResource('veiculos', 'VehicleController')->middleware('auth:api');
-// Route::get('/user', function () {
-//     //
-// })->middleware('auth:api');
